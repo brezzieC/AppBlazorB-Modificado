@@ -1,0 +1,18 @@
+﻿@page "/libro"
+<!-- Inyeccion de dependencias
+    Se utiliza la directiva inyect -->
+
+@inject NavigationManager navigationManager
+
+<h3>LibroPage</h3>
+<button @onclick="navegar" class="btn btn-primary" >Navegar a Form Libro</button>
+
+@code {
+    //Metodos dentro de la directiva CODE
+        //metodo navegar
+        //OtraS VALIDACIONES DE LOS CAMPOS DE LA CLASE CREADA
+    private void navegar()
+    {
+        navigationManager.NavigateTo("/formlibro");
+    }
+}
