@@ -10,6 +10,8 @@ namespace AppBlazor.Entities
     {
         public int idLibro { get; set; }
         public string titulo { get; set; } = null!;
-        public string resumen { get; set; }
+        public string resumen { get; set; } = string.Empty;
+        public string nombreTipoLibro { get; set; }
+
     }
 }

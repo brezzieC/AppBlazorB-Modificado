@@ -9,5 +9,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+// Registrar los servicios
 builder.Services.AddScoped<LibroService>();
+builder.Services.AddScoped<TipoLibroService>();  // Aquí es donde registramos el servicio TipoLibroService
+
 await builder.Build().RunAsync();

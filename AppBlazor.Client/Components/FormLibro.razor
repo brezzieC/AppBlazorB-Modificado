@@ -1,74 +1,91 @@
 ﻿@inject NavigationManager navigationManager
-@inject LibroService libroService // VER -------------
+@inject LibroService libroService
+@inject TipoLibroService tipoLibroService
+
 <h2>@titulo</h2>
-<!-- Asi se trabaja con rutas, pegar esa ruta al lado de local-->
-<!--<h3>LibroFormPage</h3>-->
-<!-- Diseño del formulario -->
-<!-- OnValidSubmit es una validacion-->
+
 <EditForm Model="@oLibroFormCLS" OnValidSubmit="@guardar">
-    <!--Este form se basara en lo que ese objeto tiene-->
     <DataAnnotationsValidator />
 
     <div class="mt-3">
         <label>Id Libro</label>
-        <InputNumber class="form-control" @bind-Value="oLibroFormCLS.idLibro" /> <!--A este control number le asociamos el idlibro-->
+        <InputNumber readonly class="form-control" @bind-Value="oLibroFormCLS.idLibro" />
         <ValidationMessage For="(() => oLibroFormCLS.idLibro)" />
     </div>
+
     <div class="mt-3">
-        <label>Titulo</label>
+        <label>Título</label>
         <InputText class="form-control" @bind-Value="oLibroFormCLS.titulo" />
         <ValidationMessage For="(() => oLibroFormCLS.titulo)" />
     </div>
+
+    <div class="mt-3">
+        <label>Tipo de Libro</label>
+        <InputSelect class="form-control" @bind-Value="oLibroFormCLS.idTipoLibro">
+            <option value="0">-- Seleccione --</option>
+            @foreach (var tipo in listaTipoLibro)
+            {
+                <option value="@tipo.idTipoLibro">@tipo.nombreTipoLibro</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="(() => oLibroFormCLS.idTipoLibro)" />
+    </div>
+
     <div class="mt-3">
         <label>Resumen</label>
         <InputTextArea class="form-control" @bind-Value="oLibroFormCLS.resumen" />
         <ValidationMessage For="(() => oLibroFormCLS.resumen)" />
     </div>
-    <div class="mt-3">
+
+    
+
+    <div class="mt-4">
         <button type="submit" class="btn btn-success">Guardar</button>
-        <button class="btn btn-danger" @onclick="@regresar">Regresar</button>
+        <button type="button" class="btn btn-danger" @onclick="@regresar">Regresar</button>
     </div>
 </EditForm>
+
 @code {
-    //Crear una propiedad del objeto
     public LibroFormCLS oLibroFormCLS { get; set; } = new LibroFormCLS();
+    public List<TipoLibroCLS> listaTipoLibro { get; set; } = new();
+
     [Parameter]
-    public int idlibro { get; set; } // cambio hoy ♦
+    public int idlibro { get; set; }
 
     public string titulo { get; set; } = "";
-    protected override Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
-        if (idlibro == 0) titulo = "Agregar libro";
+        listaTipoLibro = tipoLibroService.ListarTipoLibro(); // Usamos await si es async
+
+        if (idlibro == 0)
+        {
+            titulo = "Agregar libro";
+        }
         else
         {
             titulo = "Editar libro";
             oLibroFormCLS = libroService.recuperarLibroPorId(idlibro);
         }
-        return base.OnInitializedAsync();
     }
 
 
     private void guardar()
     {
-        Console.WriteLine("Guardando...");
-
         if (idlibro == 0)
         {
-            // Crear nuevo libro
             libroService.guardarLibro(oLibroFormCLS);
         }
         else
         {
-            // Editar libro existente
-            libroService.actualizarLibro(oLibroFormCLS); // Asegúrate de tener este método en tu servicio
+            libroService.actualizarLibro(oLibroFormCLS);
         }
 
         navigationManager.NavigateTo("libro");
     }
 
-
     private void regresar()
     {
-        navigationManager.NavigateTo("libro"); 
+        navigationManager.NavigateTo("libro");
     }
 }

@@ -6,11 +6,13 @@ namespace AppBlazor.Client.Services
     public class LibroService
     {
         private List<LibroListCLS> lista;
-        public LibroService()
+        private TipoLibroService tipolibroservice;
+        public LibroService(TipoLibroService _tipolibroservice)
         {
+            tipolibroservice = _tipolibroservice;
             lista = new List<LibroListCLS>();
-            lista.Add(new LibroListCLS { idLibro= 1, titulo="Libro 1"});
-            lista.Add(new LibroListCLS { idLibro = 2, titulo = "Libro 2" });
+            lista.Add(new LibroListCLS { idLibro= 1, titulo="Libro 1", nombreTipoLibro="Cuento"});
+            lista.Add(new LibroListCLS { idLibro = 2, titulo = "Libro 2", nombreTipoLibro = "Novela" });
         }
         public List<LibroListCLS> listarLibros()
         {
@@ -24,25 +26,37 @@ namespace AppBlazor.Client.Services
 
 
         public LibroFormCLS recuperarLibroPorId(int idlibro)
-        { 
+        {
             var obj = lista.Where(p => p.idLibro == idlibro).FirstOrDefault();
-            if(obj != null)
+            if (obj != null)
             {
-                return new LibroFormCLS { idLibro = obj.idLibro, titulo = obj.titulo, resumen="Resumen"};
+                return new LibroFormCLS
+                {
+                    idLibro = obj.idLibro,
+                    titulo = obj.titulo,
+                    resumen = "Resumen",
+                    idTipoLibro = tipolibroservice.ObtenerIdTipoLibro(obj.nombreTipoLibro) // Usamos el nuevo método para obtener el ID
+                };
             }
             else
             {
                 return new LibroFormCLS();
             }
         }
+
+
+
+
         public void guardarLibro(LibroFormCLS oLibroFormCLS)
         {
-            lista.Add(new LibroListCLS
-            {
-                idLibro = oLibroFormCLS.idLibro,
-                titulo = oLibroFormCLS.titulo,
-                resumen = oLibroFormCLS.resumen
-            });
+                int idLibro = lista.Select(p => p.idLibro).Max() + 1;
+                lista.Add(new LibroListCLS
+                {
+                    idLibro = idLibro,
+                    titulo = oLibroFormCLS.titulo,
+                    nombreTipoLibro = tipolibroservice.ObtenerTipoLibro(oLibroFormCLS.idTipoLibro)
+                });
+            
         }
 
         public void actualizarLibro(LibroFormCLS libro)
