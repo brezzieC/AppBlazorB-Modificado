@@ -52,5 +52,19 @@ namespace AppBlazor.Test
 
             Assert.Empty(errores);
         }
+        //Prueba unitaria 3
+        /*[Fact]
+        public void ValidacionDebePasarConDatosCorrectos()
+        {
+            var libro = new LibroFormCLS
+            {
+                idLibro = 1,
+                titulo = "Libro de prueba",
+                resumen = "Este es el resumen el libro de prueba"
+            };
+            var errores = ValidarModelo(libro);
+
+            Assert.Empty(errores);
+        }*/
     }
 }

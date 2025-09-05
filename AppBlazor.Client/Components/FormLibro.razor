@@ -1,5 +1,6 @@
-﻿<h3>FormLibro</h3>
-@inject NavigationManager navigationManager
+﻿@inject NavigationManager navigationManager
+@inject LibroService libroService // VER -------------
+<h2>@titulo</h2>
 <!-- Asi se trabaja con rutas, pegar esa ruta al lado de local-->
 <!--<h3>LibroFormPage</h3>-->
 <!-- Diseño del formulario -->
@@ -31,13 +32,43 @@
 @code {
     //Crear una propiedad del objeto
     public LibroFormCLS oLibroFormCLS { get; set; } = new LibroFormCLS();
+    [Parameter]
+    public int idlibro { get; set; } // cambio hoy ♦
+
+    public string titulo { get; set; } = "";
+    protected override Task OnInitializedAsync()
+    {
+        if (idlibro == 0) titulo = "Agregar libro";
+        else
+        {
+            titulo = "Editar libro";
+            oLibroFormCLS = libroService.recuperarLibroPorId(idlibro);
+        }
+        return base.OnInitializedAsync();
+    }
+
+
     private void guardar()
     {
         Console.WriteLine("Guardando...");
+
+        if (idlibro == 0)
+        {
+            // Crear nuevo libro
+            libroService.guardarLibro(oLibroFormCLS);
+        }
+        else
+        {
+            // Editar libro existente
+            libroService.actualizarLibro(oLibroFormCLS); // Asegúrate de tener este método en tu servicio
+        }
+
+        navigationManager.NavigateTo("libro");
     }
+
 
     private void regresar()
     {
-        navigationManager.NavigateTo("libro"); // Verificar la L ♦
+        navigationManager.NavigateTo("libro"); 
     }
 }

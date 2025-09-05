@@ -1,11 +1,7 @@
 ﻿@page "/libro"
-<!-- Inyeccion de dependencias
-    Se utiliza la directiva inject -->
-
 @inject NavigationManager navigationManager
 @inject LibroService libroService
-<h3>LibroPage</h3>
-<button @onclick="navegar" class="btn btn-primary" >Navegar a Form Libro</button>
+<button @onclick="nuevo" class="btn btn-primary" >Nuevo</button>
 @if(lista != null && lista.Count != 0)
 {
     <table class="table">
@@ -55,7 +51,7 @@
     {
         lista = libroService.listarLibros();
     }
-    private void navegar()
+    private void nuevo()
     {
         navigationManager.NavigateTo("/formlibro");
     }
