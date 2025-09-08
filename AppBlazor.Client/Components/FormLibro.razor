@@ -36,6 +36,12 @@
         <InputTextArea class="form-control" @bind-Value="oLibroFormCLS.resumen" />
         <ValidationMessage For="(() => oLibroFormCLS.resumen)" />
     </div>
+    <div class="mt-3">
+        <img src="@imagePreview" alt="Image Preview" width="150" height="150" style="border:1px solid" />
+    </div>
+    <div class="mt-2">
+        <InputFile OnChange="HandleSelected" accept="image/*"/>
+    </div>
 
     
 
@@ -46,6 +52,22 @@
 </EditForm>
 
 @code {
+    private string? imagePreview = "/img/default.png"; // Se establece para cuando realice la edicion eto se muestre en un recuadro
+    private async Task HandleSelected(InputFileChangeEventArgs e) // Manda un archivo que se haya seleccionado en el exploraodor
+    {
+        //Obtener el archivo seleccionado
+        var file = e.File;
+
+        if(file != null)
+        {
+            //Leer la imagen como byte[]
+            var buffer = new byte[file.Size];
+            await file.OpenReadStream().ReadAsync(buffer);
+
+            //Leer la imagen a base64 para mostrarla como una URL
+            imagePreview = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
+        }
+    }
     public LibroFormCLS oLibroFormCLS { get; set; } = new LibroFormCLS();
     public List<TipoLibroCLS> listaTipoLibro { get; set; } = new();
 
@@ -72,15 +94,16 @@
 
     private void guardar()
     {
-        if (idlibro == 0)
+       /*if (idlibro == 0)
         {
             libroService.guardarLibro(oLibroFormCLS);
         }
         else
         {
             libroService.actualizarLibro(oLibroFormCLS);
-        }
+        }*/
 
+        libroService.guardarLibro(oLibroFormCLS);
         navigationManager.NavigateTo("libro");
     }
 

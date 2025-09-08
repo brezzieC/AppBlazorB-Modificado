@@ -45,10 +45,11 @@ namespace AppBlazor.Client.Services
         }
 
 
-
-
         public void guardarLibro(LibroFormCLS oLibroFormCLS)
         {
+            // ♦ hoy
+            if(oLibroFormCLS.idLibro == 0)
+            {
                 int idLibro = lista.Select(p => p.idLibro).Max() + 1;
                 lista.Add(new LibroListCLS
                 {
@@ -56,6 +57,16 @@ namespace AppBlazor.Client.Services
                     titulo = oLibroFormCLS.titulo,
                     nombreTipoLibro = tipolibroservice.ObtenerTipoLibro(oLibroFormCLS.idTipoLibro)
                 });
+            }
+            else
+            {
+                var obj = lista.Where(p => p.idLibro == oLibroFormCLS.idLibro).FirstOrDefault();
+                if(obj != null)
+                {
+                    obj.titulo = oLibroFormCLS.titulo;
+                    obj.nombreTipoLibro = tipolibroservice.ObtenerNombreTipoLibro(oLibroFormCLS.idTipoLibro);
+                }
+            }
             
         }
 
@@ -73,8 +84,6 @@ namespace AppBlazor.Client.Services
                 throw new Exception("Libro no encontrado para actualizar.");
             }
         }
-
-
 
     }
 }

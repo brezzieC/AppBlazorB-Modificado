@@ -18,7 +18,7 @@ namespace AppBlazor.Entities
         public string titulo { get; set; } = null!;
 
         [Required(ErrorMessage = "El resumen es requerido.")]
-        [MinLength(20, ErrorMessage = "La longitud mínima del resumen es de 20 caracteres.")]
+        [MinLength(5, ErrorMessage = "La longitud mínima del resumen es de 5 caracteres.")]
         public string resumen { get; set; } = null!;
 
         // Nueva propiedad para Tipo de Libro
