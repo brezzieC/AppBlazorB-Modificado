@@ -18,7 +18,9 @@
             @foreach (var item in lista)
             {
                 <tr>
-                    <td><img width="50" height="50" src="@item.imagen"/></td>
+                    <td>
+                        <img width="50" height="50" src="@obtenerImagen(item.imagen)" />
+                    </td>
                     <td>@item.idLibro</td>
                     <td>@item.titulo</td>
                     <td>@item.nombreTipoLibro</td>
@@ -44,6 +46,17 @@
     //metodo navegar
     //hbif
     //OtraS VALIDACIONES DE LOS CAMPOS DE LA CLASE CREADA
+    private string obtenerImagen(byte[]? buffer)
+    {
+        if(buffer == null)
+        {
+            return "img/default.png";
+        }
+        else
+        {
+            return "data:image/png;base64," + Convert.ToBase64String(buffer);
+        }
+    }
     public List<LibroListCLS> lista { get; set; } = new List<LibroListCLS>();
     protected override Task OnInitializedAsync()
     {

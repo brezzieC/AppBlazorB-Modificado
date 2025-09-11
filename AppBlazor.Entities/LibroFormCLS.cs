@@ -25,7 +25,8 @@ namespace AppBlazor.Entities
        [Required(ErrorMessage = "El tipo de libro es requerido.")]
         public int idTipoLibro { get; set; }  
 
-        public string? nombreTipoLibro { get; set; }  
+        public string? nombreTipoLibro { get; set; }
+        public byte[]? image { get; set; }     
 
     }
 }

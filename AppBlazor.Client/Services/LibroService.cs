@@ -35,7 +35,8 @@ namespace AppBlazor.Client.Services
                     idLibro = obj.idLibro,
                     titulo = obj.titulo,
                     resumen = "Resumen",
-                    idTipoLibro = tipolibroservice.ObtenerIdTipoLibro(obj.nombreTipoLibro) // Usamos el nuevo método para obtener el ID
+                    idTipoLibro = tipolibroservice.ObtenerIdTipoLibro(obj.nombreTipoLibro),
+                    image = obj.imagen // Usamos el nuevo método para obtener el ID
                 };
             }
             else
@@ -55,7 +56,8 @@ namespace AppBlazor.Client.Services
                 {
                     idLibro = idLibro,
                     titulo = oLibroFormCLS.titulo,
-                    nombreTipoLibro = tipolibroservice.ObtenerTipoLibro(oLibroFormCLS.idTipoLibro)
+                    nombreTipoLibro = tipolibroservice.ObtenerTipoLibro(oLibroFormCLS.idTipoLibro),
+                    imagen = oLibroFormCLS.image
                 });
             }
             else
@@ -65,6 +67,7 @@ namespace AppBlazor.Client.Services
                 {
                     obj.titulo = oLibroFormCLS.titulo;
                     obj.nombreTipoLibro = tipolibroservice.ObtenerNombreTipoLibro(oLibroFormCLS.idTipoLibro);
+                    obj.imagen = oLibroFormCLS.image;
                 }
             }
             
