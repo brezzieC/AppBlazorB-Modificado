@@ -12,7 +12,9 @@ namespace AppBlazor.Entities
         public string titulo { get; set; } = null!;
         public string resumen { get; set; } = string.Empty;
         public string nombreTipoLibro { get; set; }
-        public byte[]? imagen { get; set; } 
+        public byte[]? imagen { get; set; }
+        public byte[]? archivo { get; set; }
+        public string nombrearchivo { get; set; } = string.Empty;
 
     }
 }

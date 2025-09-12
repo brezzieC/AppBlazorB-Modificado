@@ -11,8 +11,8 @@ namespace AppBlazor.Client.Services
         {
             tipolibroservice = _tipolibroservice;
             lista = new List<LibroListCLS>();
-            lista.Add(new LibroListCLS { idLibro= 1, titulo="Libro 1", nombreTipoLibro="Cuento"});
-            lista.Add(new LibroListCLS { idLibro = 2, titulo = "Libro 2", nombreTipoLibro = "Novela" });
+            lista.Add(new LibroListCLS { idLibro= 1, titulo="Libro 1", nombreTipoLibro="Romance"});
+            lista.Add(new LibroListCLS { idLibro = 2, titulo = "Libro 2", nombreTipoLibro = "Terror" });
         }
         public List<LibroListCLS> listarLibros()
         {
@@ -44,8 +44,18 @@ namespace AppBlazor.Client.Services
                 return new LibroFormCLS();
             }
         }
-
-
+        public string recuperarArchivoPorId(int idlibro)
+        {
+            var obj = lista.Where(p => p.idLibro == idlibro).FirstOrDefault();
+            if (obj != null && obj.archivo != null)
+            {
+                return Convert.ToBase64String(obj.archivo);
+            }
+            else
+            {
+                return "";
+            }
+        }
         public void guardarLibro(LibroFormCLS oLibroFormCLS)
         {
             // ♦ hoy
@@ -57,7 +67,10 @@ namespace AppBlazor.Client.Services
                     idLibro = idLibro,
                     titulo = oLibroFormCLS.titulo,
                     nombreTipoLibro = tipolibroservice.ObtenerTipoLibro(oLibroFormCLS.idTipoLibro),
-                    imagen = oLibroFormCLS.image
+                    imagen = oLibroFormCLS.image,
+
+                    archivo = oLibroFormCLS.archivo,
+                    nombrearchivo = oLibroFormCLS.nombrearchivo
                 });
             }
             else
@@ -68,6 +81,9 @@ namespace AppBlazor.Client.Services
                     obj.titulo = oLibroFormCLS.titulo;
                     obj.nombreTipoLibro = tipolibroservice.ObtenerNombreTipoLibro(oLibroFormCLS.idTipoLibro);
                     obj.imagen = oLibroFormCLS.image;
+
+                    obj.archivo = oLibroFormCLS.archivo;
+                    obj.nombrearchivo = oLibroFormCLS.nombrearchivo;
                 }
             }
             

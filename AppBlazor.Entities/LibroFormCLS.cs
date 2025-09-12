@@ -26,7 +26,9 @@ namespace AppBlazor.Entities
         public int idTipoLibro { get; set; }  
 
         public string? nombreTipoLibro { get; set; }
-        public byte[]? image { get; set; }     
+        public byte[]? image { get; set; }
+        public byte[]? archivo{ get; set; }
+        public string nombrearchivo { get; set; } = null!;
 
     }
 }
