@@ -2,7 +2,11 @@
 @inject NavigationManager navigationManager
 @inject LibroService libroService
 @inject IJSRuntime JS
-<button @onclick="nuevo" class="btn btn-primary" >Nuevo</button>
+<div>
+    <button @onclick="nuevo" class="btn btn-primary">Nuevo</button>
+
+</div>
+<SearchLibro></SearchLibro>
 @if(lista != null && lista.Count != 0)
 {
     <table class="table">
@@ -43,21 +47,9 @@
             }
         </tbody>
     </table>
-    <script>
-        function descargarArchivo(base64Data, fileName){
-            var link = document.createElement("a");
-            link.href = "data:application/pdf;base64," + base64Data;
-            link.download = fileName;
-
-            link.click();
-        }
-    </script>
 }
 @code {
-    //Metodos dentro de la directiva CODE
-    //metodo navegar
-    //hbif
-    //OtraS VALIDACIONES DE LOS CAMPOS DE LA CLASE CREADA
+
     private async Task descargar(int idlibro, string nombrearchivo)
     {
         string archivo = libroService.recuperarArchivoPorId(idlibro);
@@ -80,9 +72,16 @@
     public List<LibroListCLS> lista { get; set; } = new List<LibroListCLS>();
     protected override Task OnInitializedAsync()
     {
-        //lista = libroService.listarLibros();
+        libroService.OnSearch += filtrar;
+
         listarLibros();
         return base.OnInitializedAsync();
+    }
+    private Task filtrar(string titulo)
+    {
+        lista = libroService.filtrarLibros(titulo);
+        StateHasChanged();
+        return Task.CompletedTask;
     }
     private void listarLibros()
     {
